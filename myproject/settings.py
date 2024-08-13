@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+import os
+from django.contrib import messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -23,7 +26,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = 'p!ot_a&yi7#4)fiho8*q29^w=ot-k71=l*!g#g%rmzjn^$eulu'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True#DEBUG = config('DEBUG', default=True, cast=bool) #True
 
 ALLOWED_HOSTS = []
 
@@ -41,6 +44,7 @@ INSTALLED_APPS = [
     'accounts',
     'store',
     'carts',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'django_session_timeout.middleware.SessionTimeoutMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -135,3 +140,17 @@ STATICFILES_DIRS = [
 # media fieldsets
 MEDIA_URL = '/media/'
 MEDIA_ROOT  = BASE_DIR /'media'
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}
+
+
+# SMTP configuration
+EMAIL_HOST =  'smtp' #config('EMAIL_HOST')
+EMAIL_PORT =  587 #config('EMAIL_PORT', cast=int)
+EMAIL_HOST_USER = 'signin1022@gmail.com' #config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = 'Mypassword@1998' #config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True #config('EMAIL_USE_TLS', cast=bool)
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
