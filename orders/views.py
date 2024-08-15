@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from carts.models import CartItem
 from .forms import OrderForm
 import datetime
+
 from .models import Order, Payment, OrderProduct
 import json
 from store.models import Product
@@ -129,12 +130,14 @@ def place_order(request, total=0, quantity=0,):
                 'tax': tax,
                 'grand_total': grand_total,
             }
-            return render(request, 'orders/payments.html', context)
+            return render(request, 'accounts/orders/payments.html', context)
     else:
         return redirect('checkout')
 
 
+
 def order_complete(request):
+
     order_number = request.GET.get('order_number')
     transID = request.GET.get('payment_id')
 
